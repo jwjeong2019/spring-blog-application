@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+
+    PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    
+
+<mapper namespace="com.jwblog.web.board.boardMapper">
+	<select id="getBoardList" resultType="com.jwblog.web.board.model.BoardVO">
+		select * from tbl_board
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="searchType == 'title' and keyword != null and keyword != '' ">
+				AND title like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'content' and keyword != null and keyword != '' ">
+				AND content like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'reg_id' and keyword != null and keyword != '' ">
+				AND reg_id like CONCAT('%', #{keyword}, '%')
+			</if>
+		</trim>
+		limit #{startList}, #{listSize}
+	</select>
+	
+	<select id="getBoardContent" resultType="com.jwblog.web.board.model.BoardVO" 
+		parameterType="com.jwblog.web.board.model.BoardVO">
+		select * from tbl_board where bid = #{bid}
+	</select>
+	
+	<insert id="insertBoard" parameterType="com.jwblog.web.board.model.BoardVO">
+		insert into tbl_board (cate_cd, title, content, tag, view_cnt, reg_id, reg_dt, edit_dt)
+		values (#{cate_cd}, #{title}, #{content}, #{tag}, 0, #{reg_id}, now(), now())
+	</insert>
+	
+	<update id="updateBoard" parameterType="com.jwblog.web.board.model.BoardVO">
+		update tbl_board set cate_cd = #{cate_cd}, title = #{title}, content = #{content}, tag = #{tag}, edit_dt = now()
+		where bid = #{bid}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from tbl_board where bid = #{bid}
+	</delete>
+	
+	<update id="updateViewCnt" parameterType="com.jwblog.web.board.model.BoardVO">
+		update tbl_board set view_cnt = view_cnt + 1
+		where bid = #{bid}
+	</update>
+	
+	<select id="getBoardListCnt" resultType="int">
+		select count(*) as listCnt from tbl_board
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="keyword != null and keyword != '' ">
+				<if test="searchType == 'title'">
+					AND title like CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="searchType == 'content'">
+					AND content like CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="searchType == 'reg_id'">
+					AND reg_id like CONCAT('%', #{keyword}, '%')
+				</if>
+			</if>
+		</trim>
+	</select>
+
+
+</mapper>

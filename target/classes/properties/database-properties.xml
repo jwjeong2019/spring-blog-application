@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>DATA_SOURCE</comment>
+	<entry key="jdbc.driverClassName">net.sf.log4jdbc.sql.jdbcapi.DriverSpy</entry>
+	<entry key="jdbc.url">jdbc:log4jdbc:mysql://127.0.0.1:3306/mess?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC</entry>
+	<entry key="jdbc.username">mess</entry>
+	<entry key="jdbc.password">mess</entry>
+</properties>
